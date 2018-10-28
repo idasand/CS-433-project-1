@@ -1,7 +1,6 @@
 #all implementation goes here
 
 import numpy as np
-import datetime
 from helpers import *
 
 import matplotlib.pyplot as plt
@@ -11,7 +10,6 @@ import matplotlib.pyplot as plt
 ########## The six methods ##########
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-
 	"""Gradient descent algorithm."""
 	# Define parameters to store w and loss
 	ws = [initial_w]
@@ -39,7 +37,6 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-
 	"""Stochastic gradient descent algorithm."""
 	ws = [initial_w]
 	losses = []
@@ -47,7 +44,6 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
 	batch_size = 1
 
 	#iterate max_iters times, where a small batch is picked on each iteration.
-	#Don't understant whyyy we do this?
 	for n_iter in range(max_iters):
 		for minibatch_y, minibatch_tx in batch_iter(y, tx, batch_size, num_batches=1):
 			grad, err = compute_gradient(minibatch_y, minibatch_tx, w)
