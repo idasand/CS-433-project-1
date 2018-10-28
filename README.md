@@ -9,11 +9,11 @@ Group: Maiken Berthelsen, Ida Sandsbraaten and Sigrid Wanvik Haugen.
 ### Running instructions:
 - Download the .zip-file containing the data set from https://www.kaggle.com/c/epfml18-higgs/data. Make sure that the folder containing these files are in the same folder as the src folder
 
-- The code can be run by calling "python main.py" from your terminal
+- The code can be run by calling "python run.py" from your terminal
 
 - The running is finished when "Finished" is printed to the terminal
 
-- The submission csv file can be found in the same folder with the name "Results.csv"
+- The submission csv file can be found in the same folder with the name "results.csv"
 
 
 

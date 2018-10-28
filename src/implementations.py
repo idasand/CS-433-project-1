@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 
 ########## The six methods ##########
+
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 	"""Gradient descent algorithm."""
@@ -115,6 +116,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     w = ws[min_ind][:]
     
     return w, loss
+
     
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 	ws = [initial_w]
@@ -140,6 +142,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 	min_ind = np.argmin(losses)
 	loss = losses[min_ind]
 	w = ws[min_ind][:]
+
 	return w, loss
 
 
@@ -156,6 +159,7 @@ def standardize(x):
     x /= np.std(x, axis=0)
 
     return x
+
 
 def remove999(x_train, pred_train, ids_train, x_test, ids_test): 
 
@@ -215,11 +219,13 @@ def findcorrelation(pred_train, sig_or_back):
 ########## Other implementations used ##########
 
 def build_model_data(x, y):
+    #From ex02 template
     """Form (y,tX) to get regression data in matrix form."""
     N = len(y)
     #tx = np.c_[np.ones(N), x]
     tx = np.c_[np.ones((y.shape[0], 1)), x]
     return y, tx
+
 
 def compute_mse(y, tx, w):
     """Compute the loss by mse."""
@@ -227,11 +233,13 @@ def compute_mse(y, tx, w):
     mse =  1/(2 * len(e)) * e.dot(e)
     return mse
 
+
 def compute_gradient(y, tx, w):
     """Compute the gradient."""
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)
     return grad, err
+
 
 def sigmoid(t):
     """apply sigmoid function on t."""
@@ -286,55 +294,8 @@ def standardize_with_bootstrapping(x,num_subSamp):
     return x
 
 
-
-### USIKKER PÅ DISSE
-def logistic_regression_hessian(y, tx, initial_w, max_iters, gamma):
-
-    ws = [initial_w]
-    losses = []
-    w = initial_w
-    loss = 0
-    #threshold = 1e-8
-
-    for n_iter in range(max_iters):
-
-        loss = sum(sum(np.logaddexp(0, tx.dot(w)) - y*(tx.dot(w))))
-
-        #print(loss)
-        prediction = sigmoid(tx.dot(w))
-        gradient = tx.T.dot(prediction - y)
-        hessian = calculate_hessian(y, tx, w, prediction)
-
-        # gradient w by descent update
-        hessian_inv = inverse = np.linalg.inv(hessian)
-        w = w - (hessian_inv*gradient*gamma)#np.linalg.solve(hessian, gradient)
-        print(w)
-        ws.append(w)
-        losses.append(loss)
-
-        #if (len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold):
-        #   break
-
-    #finds best parameters
-    min_ind = np.argmin(losses)
-    loss = losses[min_ind]
-    w = ws[min_ind][:]
-    
-    return w, loss
-
-
-
-
-###############KOK###########################
-def calculate_hessian(y, tx, w, pred):
-    """return the hessian of the loss function."""
-    #pred = sigmoid(tx.dot(w))*(1-)
-    pred = np.diag(pred.T[0])
-    S = np.multiply(pred, (1-pred))
-    XdotS = tx.T.dot(S)
-    return XdotS.dot(tx)
-
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
+    #From ex02 template
     """
     Generate a minibatch iterator for a dataset.
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
@@ -358,36 +319,5 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
         end_index = min((batch_num + 1) * batch_size, data_size)
         if start_index != end_index:
             yield shuffled_y[start_index:end_index], shuffled_tx[start_index:end_index]
-
-
-
-def sigmoid2(t):
-    """apply sigmoid function on t."""
-    return 1.0 / (1 + np.exp(-t))
-
-def calculate_loss_lr(y, tx, w):
-    """compute the cost by negative log likelihood."""
-    pred = sigmoid2(tx.dot(w))
-    print(pred)
-    loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
-    return np.squeeze(- loss)
-
-def calculate_gradient(y, tx, w):
-    """compute the gradient of loss."""
-    pred = sigmoid2(tx.dot(w))
-    #print(pred.shape)
-    grad = tx.T.dot(pred - y)
-    return grad
-
-
-def learning_by_gradient_descent(y, tx, w, gamma):
-    """
-    Do one step of gradient descen using logistic regression.
-    Return the loss and the updated w.
-    """
-    loss = calculate_loss_lr(y, tx, w)
-    grad = calculate_gradient(y, tx, w)
-    w -= gamma * grad
-    return loss, w
 
 

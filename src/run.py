@@ -112,7 +112,7 @@ def main():
 	#Make predictions
 	
 	#y_pred = predict_labels(rr_w, tx_test)
-	create_csv_submission(ids_test, y_pred, 'stacking_bootstrap_withlogreg28test5') #lager prediction-fila i Rolex-mappa med det navnet
+	create_csv_submission(ids_test, y_pred, 'results') #lager prediction-fila i Rolex-mappa med det navnet
 	print("Finished")
 	return 0;
 
