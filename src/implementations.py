@@ -146,6 +146,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 
 
 
+
+
 ##########  Data processing  ##########	
  
 def standardize(x):
@@ -154,8 +156,6 @@ def standardize(x):
     x /= np.std(x, axis=0)
 
     return x
-
-
 
 def remove999(x_train, pred_train, ids_train, x_test, ids_test): 
 
@@ -208,6 +208,8 @@ def findcorrelation(pred_train, sig_or_back):
             col.append(i)
 
     return col
+
+
 
 
 ########## Other implementations used ##########

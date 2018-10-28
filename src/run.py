@@ -9,6 +9,7 @@ from validation import *
 def main():
 
 	############### DATA LOADING ################
+	print("Data loading")
 	yb_train, input_data_train, ids_train = load_csv_data('../train.csv', sub_sample=True)
 	yb_test, input_data_test, ids_test = load_csv_data('../test.csv', sub_sample=True)
 
@@ -25,6 +26,7 @@ def main():
 
 
 	############### FEATURE PROCESSING ################
+	print("Feature processing")
 
 	# Remove -999 values
 	input_data_train, input_data_test = remove999(input_data_train, yb_train, ids_train, input_data_test, ids_test)
@@ -111,7 +113,7 @@ def main():
 	
 	#y_pred = predict_labels(rr_w, tx_test)
 	create_csv_submission(ids_test, y_pred, 'stacking_bootstrap_withlogreg28test5') #lager prediction-fila i Rolex-mappa med det navnet
-
+	print("Finished")
 	return 0;
 
 
