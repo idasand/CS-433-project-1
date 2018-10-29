@@ -5,11 +5,9 @@ import matplotlib.pyplot as plt
 
 
 def run_gradient_descent(y, x):
-
 	y, tx = build_model_data(x,y)
-
 	max_iters = 2000
-	gamma = 0.1 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.1 
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w, gd_loss
@@ -18,7 +16,7 @@ def run_gradient_descent(y, x):
 def run_stochastic_gradient_descent(y,x):
 	y, tx = build_model_data(y,x)
 	max_iters = 100
-	gamma = 0.01 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.01
 	batch_size = 1
 	initial_w = [-0.3428, 0.01885391, -0.26018961, -0.22812764, -0.04019317, -0.00502791,
 		0.32302178, -0.01464156, 0.23543933, 0.00973278, -0.0048371, -0.13453445,
@@ -90,22 +88,16 @@ def build_poly_vec(vec,degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     ret = np.ones(1)
     for d in range (1,degree+1):
-        # for hver dimensjon må det legges til en kolonne (som er x elementvist opphøyd i d)
-        # dette kan gjøres med np.c_
-        #np.append(ret,np.power(vec,d))#, axis =1)
         ret = np.concatenate((ret,np.power(vec,d)))#,axis =1)
     return ret
 
 def predict_labels_row(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
-    #print("calc_y: ", y_pred)
     if y_pred <= 0:
         y_pred = -1
-        #print("pred_y: ", y_pred)
     else:
         y_pred = 1
-        #print("pred_y: ", y_pred)
     return y_pred
     
 def gradient_descent_model(train):
@@ -114,7 +106,7 @@ def gradient_descent_model(train):
 	x = np.delete(train,0,axis=1)
 	tx = np.c_[np.ones((y.shape[0], 1)), x]
 	max_iters = 300
-	gamma = 0.1 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.1
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w
@@ -176,7 +168,6 @@ def ridge_regression_predict(w,row):
 	return y_pred
 
 def logistic_regression_predict(w,row):
-	#y = train[:,[0]]
 	degree = 1
 	new_row = np.delete(row,-1)
 	new_row = np.transpose(new_row)
@@ -186,22 +177,22 @@ def logistic_regression_predict(w,row):
 	return y_pred
 
 
-
-# Make predictions with sub-models and construct a new stacked row
 def to_stacked_row(models, predict_list, row):
+	# Make predictions with sub-models and construct a new stacked row
 	stacked_row = list()
 	for i in range(len(models)):
 		prediction = predict_list[i](models[i], row)
 		stacked_row.append(prediction)
 	stacked_row.append(row[0])
 	rowlist = row[1:len(row)-1].tolist()
-	return rowlist + stacked_row#new_row#row[0:len(row)-1] + stacked_row
+
+	return rowlist + stacked_row
+
 
 def stacking(y,x,yte,xte):
 	train = np.c_[y.T,x]
 	test = np.c_[yte.T,xte]
-	#model_list = [gradient_descent_model, least_square_model, ridge_regression_model]#[least_square_model]#[gradient_descent_model, least_square_model, ridge_regression_model]
-	#predict_list = [gradient_descent_predict, least_square_predict, ridge_regression_predict] #[least_square_predict]#[gradient_descent_predict, least_square_predict, ridge_regression_predict]
+
 	model_list = [gradient_descent_model, least_square_model,ridge_regression_model]
 	predict_list = [gradient_descent_predict, least_square_predict,ridge_regression_predict]
 	models = list()
@@ -225,6 +216,7 @@ def stacking(y,x,yte,xte):
 		predictions.append(prediction)
 	print("finished test")
 	#print(stacked_dataset)
+
 	return predictions
 
 

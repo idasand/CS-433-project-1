@@ -1,5 +1,3 @@
-#all implementation goes here
-
 import numpy as np
 from helpers import *
 
@@ -65,8 +63,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares(y, tx):
-	"""Calculate the least squares solution, and the loss."""
-
+	"""Calculates the least squares solution, and the loss."""
 	a = tx.T.dot(tx)
 	b = tx.T.dot(y)
 	w = np.linalg.solve(a, b)
@@ -78,14 +75,15 @@ def least_squares(y, tx):
 
 def ridge_regression(y, tx, lambda_):
     """Finds the least square solution with the regulation term"""
-	aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
-	a = tx.T.dot(tx) + aI
-	b = tx.T.dot(y)
-	w = np.linalg.solve(a, b)
-	e = y - tx.dot(w)
-	loss = e.dot(e) / (2 * len(e))
+    aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
+    a = tx.T.dot(tx) + aI
+    b = tx.T.dot(y)
+    w = np.linalg.solve(a, b)
+    e = y - tx.dot(w)
+    loss = e.dot(e) / (2 * len(e))
 
-	return w, loss
+    return w, loss
+
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Returns the best w found by logistic regression"""
@@ -100,12 +98,12 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         prediction = sigmoid(tx.dot(w))
         gradient = tx.T.dot(prediction - y)
 
-        # gradient w by descent update
+        # Gradient w by descent update
         w = w - (gamma * gradient)
         ws.append(w)
         losses.append(loss)
 
-    #finds best parameters
+    #Finds best parameters
     min_ind = np.argmin(losses)
     loss = losses[min_ind]
     w = ws[min_ind][:]
@@ -118,10 +116,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 	losses = []
 	w = initial_w
 	for n_iter in range(max_iters):
-		#print(n_iter)
-		# compute prediction, loss, gradient
-		#tx should maybe not be transposed
-		# not transposed when using large X
 		loss = 0
 		prediction = sigmoid(tx.dot(w))
 		loss = sum(np.logaddexp(0, tx.dot(w)) - y*(tx.dot(w))+ (lambda_/2)*np.linalg.norm(w)**2)
@@ -153,7 +147,7 @@ def standardize(x):
 
 
 def remove999(x_train, pred_train, ids_train, x_test, ids_test): 
-    """Remove the missing data points (-999 in the data set) and replaces them with the feature mean"""
+    """Removes the missing data points (-999 in the data set) and replaces them with the feature mean"""
     x_train = np.concatenate((ids_train[:,None], x_train), axis=1)
     x_test = np.concatenate((ids_test[:,None], x_test), axis=1)  
 
@@ -235,12 +229,12 @@ def compute_gradient(y, tx, w):
 
 
 def sigmoid(t):
-    """apply sigmoid function on t"""
+    """Apply sigmoid function on t"""
     return 1.0/(1 + np.exp(-t))
 
 
 def build_poly(x, degree):
-    """add a polynomial basis function to the data x, up to a degree=degree"""
+    """Add a polynomial basis function to the data x, up to a degree=degree"""
     ret = np.ones([len(x),1])
     for d in range (1,degree+1):
         ret = np.c_[ret,np.power(x,d)]
@@ -267,7 +261,7 @@ def bootstrap_data(x, num_subSamp):
     temp_mean = np.zeros((1,x.shape[1]))
     temp_std = np.zeros((1,x.shape[1]))
     for i in range(num_subSamp):  
-        #choosing a random subsample(with replacement) of the data with size equal to half of the sample size
+        #Choosing a random subsample(with replacement) of the data with size equal to half of the sample size
         a = x[np.random.randint(x.shape[0], size=x.shape[0]//2), :]
         temp_mean += np.mean(a, axis=0)
         temp_std += np.std(a, axis=0)

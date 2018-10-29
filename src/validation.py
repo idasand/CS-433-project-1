@@ -1,4 +1,3 @@
-
 from implementations import *
 from helpers import *
 from run_functions import *
@@ -15,7 +14,6 @@ def build_k_indices(y, k_fold, seed):
 
 
 ############# GRADIENT DESCENT ################
-
 def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
     """ perform the k_th step of cross validation on gradient descent """
 
@@ -70,7 +68,6 @@ def gradientdescent_gamma(y, x):
 
 def cross_validation_ls(y, x, k_indices, k, degree):
     """ perform the k_th step of cross validation on least squares """
-
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
 
@@ -151,7 +148,7 @@ def ridgeregression_lambda(y, x):
     degree = 12
     k_fold = 4
     lambdas = np.logspace(-5, 0, 6)
-    # split data in k fold
+    # Split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     # define lists to store the loss of training data and test data
     rmse_tr = []
@@ -257,6 +254,7 @@ def cross_validation_lr(y, x, k_indices, k, max_iters, gamma, degree):
 
     return acc
 
+
 def logregression_gamma(y, x):
     print('start')
     seed = 1
@@ -280,6 +278,7 @@ def logregression_gamma(y, x):
         print(gamma, ' accuracy = ', np.mean(acc_temp), 'std = ', np.std(acc_temp))
     print(accs)
     cross_validation_visualization_lr(gammas, accs)
+
 
 def logregression_gamma_degree(y, x):
     print('start')
@@ -310,6 +309,7 @@ def logregression_gamma_degree(y, x):
     print(accs)
     cross_validation_visualization_lr(gammas, accs)
 
+
 def logregression_gamma_hessian(y, x):
     print('start')
     seed = 1
@@ -322,7 +322,6 @@ def logregression_gamma_hessian(y, x):
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     # define lists to store the loss of training data and test data
-
     accs = []
     for gamma in gammas:
         acc_temp = []
@@ -398,8 +397,8 @@ def reglogregression_gamma(y, x):
     max_iters = 50
 
     k_fold = 4
-    gammas = [0.001,0.01,0.1]#[0.0001, 0.0005, 0.0009, 0.001, 0.0015, 0.002,0.003, 0.004, 0.005] #np.logspace(-3, 0, 3)
-    lambdas = [0.001, 0.001]#[0.0001, 0.0005, 0.0009, 0.001, 0.0015 ]#np.logspace(-4, 0, 5)
+    gammas = [0.001,0.01,0.1]
+    lambdas = [0.001, 0.001]
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     accs = np.zeros((len(gammas),len(lambdas)))
