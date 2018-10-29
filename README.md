@@ -7,13 +7,13 @@ Group: Maiken Berthelsen, Ida Sandsbraaten and Sigrid Wanvik Haugen.
 
 
 ### Running instructions:
-- Download the .zip-file containing the data set from https://www.kaggle.com/c/epfml18-higgs/data. Make sure that the folder containing these files are in the same folder as the src folder
+- Download the .zip-file containing the data set from https://www.kaggle.com/c/epfml18-higgs/data. Make sure that the folder containing these files are in the same folder as the src folder.
 
-- The code can be run by calling "python run.py" from your terminal
+- The code can be run by calling "python run.py" from your terminal. Make sure that the python version is 3.6.5.
 
-- The running is finished when "Finished" is printed to the terminal
+- The running is finished when "Finished" is printed to the terminal.
 
-- The submission csv file can be found in the same folder with the name "results.csv"
+- The submission csv file can be found in the same folder with the name "results.csv".
 
 
 
@@ -37,4 +37,13 @@ This code contains the following files:
 		- The functions for data processing.
 
 		- Contains the functions used in the ML methods.
+
+* validation.py
+
+	Cross-validation that is used for the different methods is implemented here.
+
+* run_functions.py
+	
+	The functions for actually running the implementation is placed in this file.
+
 

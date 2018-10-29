@@ -5,11 +5,9 @@ import matplotlib.pyplot as plt
 
 
 def run_gradient_descent(y, x):
-
 	y, tx = build_model_data(x,y)
-
 	max_iters = 2000
-	gamma = 0.1 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.1 
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w, gd_loss
@@ -18,7 +16,7 @@ def run_gradient_descent(y, x):
 def run_stochastic_gradient_descent(y,x):
 	y, tx = build_model_data(y,x)
 	max_iters = 100
-	gamma = 0.01 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.01
 	batch_size = 1
 	initial_w = [-0.3428, 0.01885391, -0.26018961, -0.22812764, -0.04019317, -0.00502791,
 		0.32302178, -0.01464156, 0.23543933, 0.00973278, -0.0048371, -0.13453445,
@@ -178,9 +176,8 @@ def logistic_regression_predict(w,row):
 	return y_pred
 
 
-
-# Make predictions with sub-models and construct a new stacked row
 def to_stacked_row(models, predict_list, row):
+	# Make predictions with sub-models and construct a new stacked row
 	stacked_row = list()
 	for i in range(len(models)):
 		prediction = predict_list[i](models[i], row)
@@ -190,6 +187,7 @@ def to_stacked_row(models, predict_list, row):
 	# if the last model should only train on the predictions of the others
 	# return only stacked_row
 	return rowlist + stacked_row
+
 
 def stacking(y,x,y_test,x_test):
 	train = np.c_[y.T,x]
