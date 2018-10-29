@@ -146,33 +146,33 @@ def logistic_regression_model(train):
 
 def gradient_descent_predict(w, row):
 	row = np.delete(row,0)
-	new_row = np.insert(row,0,1)
-	new_row = np.transpose(new_row)
-	y_pred = predict_labels_row(w, new_row)
+	row_tilde = np.insert(row,0,1)
+	row_tilde = np.transpose(row_tilde)
+	y_pred = predict_labels_row(w, row_tilde)
 	return y_pred
 
 def least_square_predict(w,row):
 	degree = 10
-	new_row = np.delete(row,0)
-	new_row = np.transpose(new_row)
-	t_row = build_poly_vec(new_row,degree)
-	y_pred = predict_labels_row(w, t_row)
+	x_row = np.delete(row,0)
+	x_row = np.transpose(x_row)
+	augmented_row = build_poly_vec(x_row,degree)
+	y_pred = predict_labels_row(w, augmented_row)
 	return y_pred
 
 def ridge_regression_predict(w,row):
-	new_row = np.delete(row,0)
 	degree = 10
-	new_row = np.transpose(new_row)
-	t_row = build_poly_vec(new_row,degree)
-	y_pred = predict_labels_row(w, t_row)
+	x_row = np.delete(row,0)
+	x_row = np.transpose(x_row)
+	augmented_row = build_poly_vec(x_row,degree)
+	y_pred = predict_labels_row(w, augmented_row)
 	return y_pred
 
 def logistic_regression_predict(w,row):
 	degree = 1
-	new_row = np.delete(row,-1)
-	new_row = np.transpose(new_row)
-	t_row = build_poly_vec(new_row,degree)
-	y_pred = predict_labels_row(w, t_row)
+	x_row = np.delete(row,-1)
+	x_row = np.transpose(x_row)
+	augmented_row = build_poly_vec(x_row,degree)
+	y_pred = predict_labels_row(w, augmented_row)
 	return y_pred
 
 
