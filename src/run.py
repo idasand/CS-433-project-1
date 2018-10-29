@@ -76,7 +76,7 @@ def main():
 
 	#reglogregression_gamma(yb_train, x_train)
 
-	#stacking_cross(yb_train, x_train)
+	stacking_cross(yb_train, x_train)
 	
 	#y_pred = stacking(yb_train,x_train,yb_test,x_test)
 	
@@ -84,8 +84,8 @@ def main():
 
 	############# MAKE PREDICTIONS ###############
 	
-	y_pred = predict_labels(rr_w, tx_test)
-	create_csv_submission(ids_test, y_pred, 'results') #lager prediction-fila i Rolex-mappa med det navnet
+	#y_pred = predict_labels(rr_w, tx_test)
+	#create_csv_submission(ids_test, y_pred, 'results') #lager prediction-fila i Rolex-mappa med det navnet
 	print("Finished")
 	return 0;
 

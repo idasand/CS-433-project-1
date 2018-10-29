@@ -4,10 +4,14 @@ from helpers import *
 import matplotlib.pyplot as plt
 
 
+####################### RUN FUNCTIONS #####################################
+# the run functions runs the various functions given the parameters given #
+# at the beginning of every functions. These parameters were find through #
+# optimization, but can be changed                                        #
 def run_gradient_descent(y, x):
-	y, tx = build_model_data(x,y)
-	max_iters = 2000
+	max_iters = 300
 	gamma = 0.1 
+	y, tx = build_model_data(x,y)
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w, gd_loss
@@ -77,12 +81,6 @@ def run_reg_logistic_regression(y, x):
 	return rlr_w, rlr_loss
 
 
-
-
-
-
-
-
 ######################### STACKING##############################
 def build_poly_vec(vec,degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
@@ -101,46 +99,46 @@ def predict_labels_row(weights, data):
     return y_pred
     
 def gradient_descent_model(train):
+	max_iters = 300
+	gamma = 0.1 
 	y = train[:,[0]]
 	y = np.squeeze(np.asarray(y))
 	x = np.delete(train,0,axis=1)
 	tx = np.c_[np.ones((y.shape[0], 1)), x]
-	max_iters = 300
-	gamma = 0.1 
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w
 
 def least_square_model(train):
+	degree = 10
 	y = train[:,[0]]
 	y = np.squeeze(np.asarray(y))
 	x = np.delete(train,0,axis=1)
-	degree = 10
 	tx = build_poly(x,degree)
 	ls_w, ls_loss = least_squares(y, tx)
 	return ls_w
 
 def ridge_regression_model(train):
+	degree = 10
+	lambda_ = 0.0001
 	y = train[:,[0]]
 	y = np.squeeze(np.asarray(y))
 	x = np.delete(train,0,axis=1)
-	degree = 10
-	lambda_ = 0.0001
 	tx = build_poly(x,degree)
 	rr_w, rr_loss = ridge_regression(y, tx, lambda_)
 	return rr_w
 
 
 def logistic_regression_model(train):
+	degree = 1
+	gamma = 0.1
+	max_iters = 300
 	y = [i[-1] for i in train]
 	y = np.squeeze(np.asarray(y))
 	x = np.delete(train,-1,axis=1)
-	degree = 1
 	tx = build_poly(x,degree)
 	initial_w = np.zeros((tx.shape[1], 1))
 	y = np.expand_dims(y, axis=1)
-	gamma = 0.1
-	max_iters = 300
 	lr_w, lr_loss = logistic_regression(y, tx, initial_w, max_iters, gamma)
 	return lr_w
 
