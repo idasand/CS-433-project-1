@@ -65,7 +65,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares(y, tx):
-	"""calculate the least squares solution."""
+	"""Calculate the least squares solution, and the loss."""
 
 	a = tx.T.dot(tx)
 	b = tx.T.dot(y)
@@ -77,6 +77,7 @@ def least_squares(y, tx):
 
 
 def ridge_regression(y, tx, lambda_):
+    """Finds the least square solution with the regulation term"""
 	aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
 	a = tx.T.dot(tx) + aI
 	b = tx.T.dot(y)
@@ -87,12 +88,13 @@ def ridge_regression(y, tx, lambda_):
 	return w, loss
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-
+    """Returns the best w found by logistic regression"""
     ws = [initial_w]
     losses = []
     w = initial_w
     loss = 0
-    #threshold = 1e-8
+
+    #Iterates through the number of steps
     for n_iter in range(max_iters):
         loss = sum(sum(np.logaddexp(0, tx.dot(w)) - y*(tx.dot(w))))
         prediction = sigmoid(tx.dot(w))
@@ -102,9 +104,6 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w = w - (gamma * gradient)
         ws.append(w)
         losses.append(loss)
-
-        #if (len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold):
-        #   break
 
     #finds best parameters
     min_ind = np.argmin(losses)
@@ -143,10 +142,6 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 
 
 
-
-
-
-
 ##########  Data processing  ##########	
  
 def standardize(x):
@@ -158,7 +153,7 @@ def standardize(x):
 
 
 def remove999(x_train, pred_train, ids_train, x_test, ids_test): 
-
+    """Remove the missing data points (-999 in the data set) and replaces them with the feature mean"""
     x_train = np.concatenate((ids_train[:,None], x_train), axis=1)
     x_test = np.concatenate((ids_test[:,None], x_test), axis=1)  
 
@@ -186,6 +181,7 @@ def remove999(x_train, pred_train, ids_train, x_test, ids_test):
 
 
 def removecols(input_data_train, input_data_test, cols):
+    """Removes any columns from the train and test data set"""
     input_data_train = np.delete(input_data_train,cols, axis = 1)
     input_data_test = np.delete(input_data_test,cols, axis = 1)
     
@@ -193,6 +189,7 @@ def removecols(input_data_train, input_data_test, cols):
     
 
 def logpositive(x_train, x_test):
+    """Converts features with only positive entries into their logarithms"""
     for i in range(1,x_train.shape[1]):
         if (np.all(x_train[:,i]) > 0 and np.all(x_test[:,i] > 0)):
             x_train[:,i] = np.log10(x_train[:,i])
@@ -231,29 +228,27 @@ def compute_mse(y, tx, w):
 
 
 def compute_gradient(y, tx, w):
-    """Compute the gradient."""
+    """Compute the gradient at a certain point w"""
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)
     return grad, err
 
 
 def sigmoid(t):
-    """apply sigmoid function on t."""
+    """apply sigmoid function on t"""
     return 1.0/(1 + np.exp(-t))
-    #return np.exp(t)/(1 + np.exp(t))
 
 
 def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
-
+    """add a polynomial basis function to the data x, up to a degree=degree"""
     ret = np.ones([len(x),1])
     for d in range (1,degree+1):
-
         ret = np.c_[ret,np.power(x,d)]
     return ret
 
 
 def split_data(y, x, ratio, seed=10):
+    """Splitting data into train and test set, with (share = ratio) of the data in the training set"""
     np.random.seed(seed)
     N = len(y)
 
@@ -297,9 +292,6 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
     Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
     Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
-    Example of use :
-    for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
-        <DO-SOMETHING>
     """
     data_size = len(y)
 

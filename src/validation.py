@@ -4,7 +4,7 @@ from helpers import *
 from run_functions import *
 
 def build_k_indices(y, k_fold, seed):
-    """build k indices for k-fold."""
+    """build k indices for k-fold cross validation."""
     num_row = y.shape[0]
     interval = int(num_row / k_fold)
     np.random.seed(seed)
@@ -17,7 +17,7 @@ def build_k_indices(y, k_fold, seed):
 ############# GRADIENT DESCENT ################
 
 def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
-    """return the loss of ridge regression."""
+    """ perform the k_th step of cross validation on gradient descent """
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -38,6 +38,7 @@ def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
 
 
 def gradientdescent_gamma(y, x):
+    """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
     seed = 1
     k_fold = 10
     max_iters = 1000
@@ -68,7 +69,7 @@ def gradientdescent_gamma(y, x):
 
 
 def cross_validation_ls(y, x, k_indices, k, degree):
-    """return the loss of ridge regression."""
+    """ perform the k_th step of cross validation on least squares """
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -89,6 +90,8 @@ def cross_validation_ls(y, x, k_indices, k, degree):
 
 
 def leastsquares_degree(y, x):
+    """ Plots and prints the accuracy for a certain value range of """
+    """ degrees for the polynomial kernel,for least squares """
     seed = 1
     k_fold = 10
     degrees = range(1,14+1)
@@ -117,7 +120,7 @@ def leastsquares_degree(y, x):
 
 
 def cross_validation_rr(y, x, k_indices, k, lambda_, degree):
-    """return the loss of ridge regression."""
+    """ perform the k_th step of cross validation on ridge regression """
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -140,8 +143,10 @@ def cross_validation_rr(y, x, k_indices, k, lambda_, degree):
     return loss_tr, loss_te, acc
 
 
-# Test which lambda gives best accuracy for specified degree
+
 def ridgeregression_lambda(y, x):
+    """ Plots and prints the accuracy for a certain value range for lambdas, """
+    """ for ridge regression """
     seed = 1
     degree = 12
     k_fold = 4
@@ -173,8 +178,11 @@ def ridgeregression_lambda(y, x):
     rr_lambda_visualization(degree, lambdas, accs, stds)
     
 
-# Test which combination of degree/lambda gives best accuracy
+
 def ridgeregression_degree_lambda(y,x):
+    """ Plots and prints the accuracy for a certain value range of """
+    """ degrees for the polynomial kernel, and value range for lambdas, """
+    """ for ridge regression """
     seed = 1
     k_fold = 4
     lambdas = [0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]#[0.0001]#np.logspace(-6,-3, 4)
@@ -407,6 +415,7 @@ def reglogregression_gamma(y, x):
 
     cross_validation_visualization_rlr(gammas, lambdas, accs)
 
+
 ############################ STACKING #################################
 
 def cross_validation_stacking(y, x, k_indices, k):
@@ -445,6 +454,7 @@ def stacking_cross(y, x):
     stds_final = np.std(accs)
 
     print(' acc = ', acc_final, ', std = ', stds_final)
+
 
 ############################ PLOTS ##############################
 
