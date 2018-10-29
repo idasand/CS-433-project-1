@@ -90,22 +90,16 @@ def build_poly_vec(vec,degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     ret = np.ones(1)
     for d in range (1,degree+1):
-        # for hver dimensjon må det legges til en kolonne (som er x elementvist opphøyd i d)
-        # dette kan gjøres med np.c_
-        #np.append(ret,np.power(vec,d))#, axis =1)
         ret = np.concatenate((ret,np.power(vec,d)))#,axis =1)
     return ret
 
 def predict_labels_row(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
-    #print("calc_y: ", y_pred)
     if y_pred <= 0:
         y_pred = -1
-        #print("pred_y: ", y_pred)
     else:
         y_pred = 1
-        #print("pred_y: ", y_pred)
     return y_pred
     
 def gradient_descent_model(train):
@@ -114,7 +108,7 @@ def gradient_descent_model(train):
 	x = np.delete(train,0,axis=1)
 	tx = np.c_[np.ones((y.shape[0], 1)), x]
 	max_iters = 300
-	gamma = 0.1 #Ikke høyere enn 0.15, da konvergerer det ikke
+	gamma = 0.1 
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
 	return gd_w
@@ -176,11 +170,9 @@ def ridge_regression_predict(w,row):
 	return y_pred
 
 def logistic_regression_predict(w,row):
-	#y = train[:,[0]]
 	degree = 1
 	new_row = np.delete(row,-1)
 	new_row = np.transpose(new_row)
-
 	t_row = build_poly_vec(new_row,degree)
 	y_pred = predict_labels_row(w, t_row)
 	return y_pred
@@ -195,36 +187,37 @@ def to_stacked_row(models, predict_list, row):
 		stacked_row.append(prediction)
 	stacked_row.append(row[0])
 	rowlist = row[1:len(row)-1].tolist()
-	return rowlist + stacked_row#new_row#row[0:len(row)-1] + stacked_row
+	# if the last model should only train on the predictions of the others
+	# return only stacked_row
+	return rowlist + stacked_row
 
-def stacking(y,x,yte,xte):
+def stacking(y,x,y_test,x_test):
 	train = np.c_[y.T,x]
-	test = np.c_[yte.T,xte]
-	#model_list = [gradient_descent_model, least_square_model, ridge_regression_model]#[least_square_model]#[gradient_descent_model, least_square_model, ridge_regression_model]
-	#predict_list = [gradient_descent_predict, least_square_predict, ridge_regression_predict] #[least_square_predict]#[gradient_descent_predict, least_square_predict, ridge_regression_predict]
+	test = np.c_[y_test.T,x_test]
 	model_list = [gradient_descent_model, least_square_model,ridge_regression_model]
 	predict_list = [gradient_descent_predict, least_square_predict,ridge_regression_predict]
 	models = list()
+	# creates models from the various methods based on the training set
 	for i in range(len(model_list)):
 		model = model_list[i](train)
 		models.append(model)
 	stacked_dataset = list()
-	print("finished with models")
+	print("Stacking: Finished creating models")
 	for row in train:
 		stacked_row = to_stacked_row(models, predict_list, row)
 		stacked_dataset.append(stacked_row)
+	# creates a model with logistic regression based on the other 
+	# models predictions
 	stacked_model = logistic_regression_model(stacked_dataset)
-	#stacked_model = ridge_reg_validation_model(stacked_dataset)
-	print("finished training")
+	print("Stacking: finished with logistic regression on the other models predictions")
 	predictions = list()
 	for row in test:
+		# creates predictions based on the test-set
 		stacked_row = to_stacked_row(models, predict_list, row)
 		stacked_dataset.append(stacked_row)
 		prediction = logistic_regression_predict(stacked_model, stacked_row)
-		#prediction = ridge_reg_validation_predict(stacked_model,stacked_row)
 		predictions.append(prediction)
-	print("finished test")
-	#print(stacked_dataset)
+	print("Stacking: Finished creating predictions")
 	return predictions
 
 
