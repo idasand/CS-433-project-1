@@ -44,6 +44,6 @@ This code contains the following files:
 
 * run_functions.py
 	
-	The functions for actually running the implementation is placed in this file.
+	The functions for actually running the implementation is placed in this file as well as the tuned parameters for the different functions.
 
 
