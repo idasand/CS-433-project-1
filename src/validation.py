@@ -232,7 +232,7 @@ def ridgeregression_degree_lambda(y,x):
     seed = 1
     k_fold = 4
     lambdas = [0.0001,0.001]#[0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]
-    degrees = range(9,10)#range(4,13)
+    degrees = range(9,11)#range(4,13)
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -271,7 +271,7 @@ def ridgeregression_degree_lambda(y,x):
             stds = np.vstack((stds,std))
 
     rr_degree_lambda_visualization(degrees, lambdas, accvectors, stds)
-    #rr_degree_visualization(degrees, 0.0001, accvectors, stds)    
+   
 
 
 
@@ -322,7 +322,6 @@ def logregression_gamma(y, x):
             acc_temp.append(acc)
         accs.append(np.mean(acc_temp))
         print(gamma, ' accuracy = ', np.mean(acc_temp), 'std = ', np.std(acc_temp))
-    print(accs)
     cross_validation_visualization_lr(gammas, accs)
 
 
@@ -352,7 +351,6 @@ def logregression_gamma_degree(y, x):
             accs = acc_temp
         else:
             accs = np.vstack((accs, acc_temp))
-    print(accs)
     cross_validation_visualization_lr(gammas, accs)
 
 
@@ -474,10 +472,11 @@ def ls_degree_visualization(degs, accs, stds):
 
 
 ################# RIDGE REGRESSION PLOTS ########################
+
 def rr_degree_lambda_visualization(degs, lambdas, accs, stds):
     for i in range(len(lambdas)):
         label = 'lambda =' + str(lambdas[i])
-        plt.errorbar(degs, accs, yerr=stds, marker=".", color='b', label=label)
+        plt.errorbar(degs, accs[:,i], yerr=stds[:,i], marker=".", color='b', label=label)
     
     plt.xscale('log')
     plt.xlabel("degree")

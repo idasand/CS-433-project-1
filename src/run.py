@@ -10,8 +10,8 @@ def main():
 
 	####################### DATA LOADING #######################
 	print("Data loading")
-	yb_train, input_data_train, ids_train = load_csv_data('../train.csv', sub_sample=True)
-	yb_test, input_data_test, ids_test = load_csv_data('../test.csv', sub_sample=True)
+	yb_train, input_data_train, ids_train = load_csv_data('../train.csv', sub_sample=False)
+	yb_test, input_data_test, ids_test = load_csv_data('../test.csv', sub_sample=False)
 
 
 	###################### FEATURE PROCESSING ##################
@@ -47,9 +47,9 @@ def main():
 	# Build model poly data, has to be done wen running run_least_square
 	#tx_test = build_poly(x_test,degree)
 
-	#w, loss, degree = run_ridge_regression(yb_train,x_train)
+	w, loss, degree = run_ridge_regression(yb_train,x_train)
 	# Build poly data, has to be done when running run_ridge_regression
-	#tx_test = build_poly(x_test,degree)
+	tx_test = build_poly(x_test,degree)
 
 	#w, loss = run_logistic_regression(yb_train, x_train)
 	#Build model test data must be applied when running run_logistic_regression
@@ -74,7 +74,7 @@ def main():
 	
 	#ridgeregression_lambda(yb_train, x_train)
 
-	ridgeregression_degree_lambda(yb_train, x_train)
+	#ridgeregression_degree_lambda(yb_train, x_train)
 
 	#logregression_gamma(yb_train, x_train)
 
@@ -89,8 +89,8 @@ def main():
 
 	################## MAKE PREDICTIONS #####################
 	
-	#y_pred = predict_labels(w, tx_test)
-	#create_csv_submission(ids_test, y_pred, 'results') 
+	y_pred = predict_labels(w, tx_test)
+	create_csv_submission(ids_test, y_pred, 'results1.csv') 
 	print("Finished")
 	return 0;
 
