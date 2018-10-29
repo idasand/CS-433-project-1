@@ -10,8 +10,8 @@ def main():
 
 	############### DATA LOADING ################
 	print("Data loading")
-	yb_train, input_data_train, ids_train = load_csv_data('../train.csv', sub_sample=True)
-	yb_test, input_data_test, ids_test = load_csv_data('../test.csv', sub_sample=True)
+	yb_train, input_data_train, ids_train = load_csv_data('../train.csv', sub_sample=False)
+	yb_test, input_data_test, ids_test = load_csv_data('../test.csv', sub_sample=False)
 
 
 	############### FEATURE PROCESSING ################
@@ -60,7 +60,7 @@ def main():
 	############# VALIDATIONS ###############
 	#gradientdescent_gamma(yb_train, x_train)
 
-	stochastic_gradientdescent_gamma(yb_train, x_train)
+	#stochastic_gradientdescent_gamma(yb_train, x_train)
 	
 	#leastsquares_degree(yb_train, x_train)
 	
@@ -70,13 +70,11 @@ def main():
 
 	#logregression_gamma(yb_train, x_train)
 
-	#logregression_gamma_hessian(yb_train, x_train)
-
 	#logregression_lambda(yb_train, x_train)
 
 	#logregression_gamma_degree(yb_train, x_train)
 
-	#reglogregression_gamma(yb_train, x_train)
+	reglogregression_gamma_lambda(yb_train, x_train)
 
 	#stacking_cross(yb_train, x_train)
 	

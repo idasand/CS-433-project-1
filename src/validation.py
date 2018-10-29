@@ -37,9 +37,9 @@ def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
 def gradientdescent_gamma(y, x):
     """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
     seed = 1
-    k_fold = 10
-    max_iters = 1000
-    gammas = [0.001,0.005,0.01,0.05,0.1, 0.15,0.2]
+    k_fold = 4
+    max_iters = 300
+    gammas = [0.001,0.005,0.01,0.025,0.05,0.1, 0.15,0.2, 0.3,0.4]
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -88,7 +88,7 @@ def stochastic_gradientdescent_gamma(y, x):
     seed = 1
     k_fold = 4
     max_iters = 100
-    gammas = [0.0001,0.0005,0.001,0.005,0.01,0.05,0.1]
+    gammas = [0.0001,0.0005,0.001,0.005,0.01,0.05,0.1, 0.2]
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -137,7 +137,7 @@ def leastsquares_degree(y, x):
     """ Plots and prints the accuracy for a certain value range of """
     """ degrees for the polynomial kernel,for least squares """
     seed = 1
-    k_fold = 10
+    k_fold = 4
     degrees = range(1,14+1)
 
     # split data in k fold
@@ -192,7 +192,7 @@ def ridgeregression_lambda(y, x):
     """ Plots and prints the accuracy for a certain value range for lambdas, """
     """ for ridge regression """
     seed = 1
-    degree = 12
+    degree = 10
     k_fold = 4
     lambdas = np.logspace(-5, 0, 6)
     # Split data in k fold
@@ -229,7 +229,7 @@ def ridgeregression_degree_lambda(y,x):
     """ for ridge regression """
     seed = 1
     k_fold = 4
-    lambdas = [0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]#[0.0001]#np.logspace(-6,-3, 4)
+    lambdas = [0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]
     degrees = range(4,13)
 
     # split data in k fold
@@ -309,8 +309,7 @@ def logregression_gamma(y, x):
     degree = 1
 
     k_fold = 4
-    gammas = [0.0001,0.0005, 0.001, 0.0015, 0.005]#,0.01,0.05,0.1]
-    #gammas = [0.0001, 0.0005, 0.0009, 0.001, 0.0015, 0.002, 0.0022, 0.0025, 0.003]
+    gammas = [0.0001,0.0005, 0.001, 0.0015, 0.005]
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -357,60 +356,6 @@ def logregression_gamma_degree(y, x):
     cross_validation_visualization_lr(gammas, accs)
 
 
-def logregression_gamma_hessian(y, x):
-    print('start')
-    seed = 1
-    max_iters = 50
-    degree = 1
-    k_fold = 4
-    gammas = [0.01,0.05, 0.1]
-    #gammas = [0.0001, 0.0005, 0.0009, 0.001, 0.0015, 0.002]#, 0.01,0.05]
-
-    # split data in k fold
-    k_indices = build_k_indices(y, k_fold, seed)
-    # define lists to store the loss of training data and test data
-    accs = []
-    for gamma in gammas:
-        acc_temp = []
-
-        for k in range(k_fold):
-            acc = cross_validation_lrh(y, x, k_indices, k, max_iters, gamma)
-            acc_temp.append(acc)
-        accs.append(np.mean(acc_temp))
-        print(gamma, ' accuracy = ', np.mean(acc_temp), 'std = ', np.std(acc_temp))
-    print(accs)
-    cross_validation_visualization_lr(gammas, accs)
-
-
-def cross_validation_lrh(y, x, k_indices, k, max_iters, gamma):
-    """return the loss of ridge regression."""
-
-    y_te=y[k_indices[k,:]]
-    y_te = np.expand_dims(y_te, axis=1)
-    x_te=x[k_indices[k,:]]
-
-    tr_indices=np.delete(k_indices, (k), axis=0)
-    
-    y_tr=y[tr_indices].flatten()
-    y_tr = np.expand_dims(y_tr, axis=1)
-    x_tr = x[tr_indices].reshape(x.shape[0]-x_te.shape[0],x.shape[1])
-
-
-    #y_tr,tx_tr = build_model_data(x_tr, y_tr)
-    #y_te,tx_te = build_model_data(x_te, y_te)
-    tx_tr = build_poly(x_tr,1)
-    tx_te = build_poly(x_te,1)
-
-    initial_w = np.zeros((tx_tr.shape[1], 1))
-    w, loss = logistic_regression_hessian(y_tr, tx_tr, initial_w, max_iters, gamma)
-
-    y_pred = predict_labels(w, tx_te)
-    acc = float(np.sum(y_te == y_pred))/len(y_te)
-
-    return acc
-
-
-
 
 ################### REGURALIZED LOGISTIC REGRESSION ############################
 
@@ -439,13 +384,13 @@ def cross_validation_rlr(y, x, lambda_, k_indices, k, max_iters, gamma):
     return acc
 
 
-def reglogregression_gamma(y, x):
+def reglogregression_gamma_lambda(y, x):
     seed = 1
     max_iters = 50
 
     k_fold = 4
-    gammas = [0.001,0.01,0.1]
-    lambdas = [0.001, 0.001]
+    gammas = [0.001,0.01,0.025,0.1]
+    lambdas = [0.0001, 0.001]
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     accs = np.zeros((len(gammas),len(lambdas)))

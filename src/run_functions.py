@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 # optimization, but can be changed                                        #
 def run_gradient_descent(y, x):
 	max_iters = 300
-	gamma = 0.1 
+	gamma = 0.2 
 	y, tx = build_model_data(x,y)
 	initial_w = np.zeros(tx.shape[1])
 	gd_w, gd_loss = least_squares_GD(y, tx, initial_w, max_iters, gamma)
@@ -21,7 +21,7 @@ def run_gradient_descent(y, x):
 def run_stochastic_gradient_descent(y,x):
 	y, tx = build_model_data(x,y)
 	max_iters = 100
-	gamma = 0.0001
+	gamma = 0.0005
 	initial_w = np.zeros(tx.shape[1]) 
 	sgd_w, sgd_loss = least_squares_SGD(y, tx, initial_w, max_iters, gamma)
 
@@ -94,7 +94,7 @@ def predict_labels_row(weights, data):
     
 def gradient_descent_model(train):
 	max_iters = 300
-	gamma = 0.1 
+	gamma = 0.2
 	y = train[:,[0]]
 	y = np.squeeze(np.asarray(y))
 	x = np.delete(train,0,axis=1)
