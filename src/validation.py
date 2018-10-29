@@ -448,7 +448,6 @@ def stacking_cross(y, x):
     for k in range(k_fold):
         acc = cross_validation_stacking(y, x, k_indices, k)
         accs.append(acc)
-        print("acc", acc)
     acc_final = np.mean(accs)
     stds_final = np.std(accs)
 
