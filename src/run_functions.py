@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 
 ####################### RUN FUNCTIONS #####################################
-# the run functions runs the various functions given the parameters given #
+# The run functions runs the various functions given the parameters given #
 # at the beginning of every functions. These parameters were find through #
 # optimization, but can be changed                                        #
 def run_gradient_descent(y, x):

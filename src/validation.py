@@ -3,7 +3,7 @@ from helpers import *
 from run_functions import *
 
 def build_k_indices(y, k_fold, seed):
-    """build k indices for k-fold cross validation."""
+    #Build k indices for k-fold cross validation.#
     num_row = y.shape[0]
     interval = int(num_row / k_fold)
     np.random.seed(seed)
@@ -15,7 +15,7 @@ def build_k_indices(y, k_fold, seed):
 
 ############# GRADIENT DESCENT ################
 def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
-    """ perform the k_th step of cross validation on gradient descent """
+    # Perform the k_th step of cross validation on gradient descent. #
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -35,7 +35,8 @@ def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
     return acc
 
 def gradientdescent_gamma(y, x):
-    """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
+    # Plots and prints the accuracy for a certain value range of gammas, #
+    # for gradient descent                                               #
     seed = 1
     k_fold = 10
     max_iters = 1000
@@ -64,7 +65,7 @@ def gradientdescent_gamma(y, x):
 ############# STOCHASTIC GRADIENT DESCENT ################
 
 def cross_validation_sgd(y, x, k_indices, k, gamma, max_iters):
-    """ perform the k_th step of cross validation on gradient descent """
+    # Perform the k_th step of cross validation on gradient descent. #
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -84,7 +85,8 @@ def cross_validation_sgd(y, x, k_indices, k, gamma, max_iters):
     return acc
 
 def stochastic_gradientdescent_gamma(y, x):
-    """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
+    # Plots and prints the accuracy for a certain value range of gammas,   #
+    # for gradient descent                                                 #
     seed = 1
     k_fold = 4
     max_iters = 100
@@ -114,7 +116,7 @@ def stochastic_gradientdescent_gamma(y, x):
 
 
 def cross_validation_ls(y, x, k_indices, k, degree):
-    """ perform the k_th step of cross validation on least squares """
+    # Perform the k_th step of cross validation on least squares #
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
 
@@ -134,8 +136,8 @@ def cross_validation_ls(y, x, k_indices, k, degree):
 
 
 def leastsquares_degree(y, x):
-    """ Plots and prints the accuracy for a certain value range of """
-    """ degrees for the polynomial kernel,for least squares """
+    #Plots and prints the accuracy for a certain value range of    #
+    # degrees for the polynomial kernel,for least squares          #
     seed = 1
     k_fold = 10
     degrees = range(1,14+1)
@@ -164,7 +166,7 @@ def leastsquares_degree(y, x):
 
 
 def cross_validation_rr(y, x, k_indices, k, lambda_, degree):
-    """ perform the k_th step of cross validation on ridge regression """
+    # Perform the k_th step of cross validation on ridge regression #
 
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
@@ -189,8 +191,8 @@ def cross_validation_rr(y, x, k_indices, k, lambda_, degree):
 
 
 def ridgeregression_lambda(y, x):
-    """ Plots and prints the accuracy for a certain value range for lambdas, """
-    """ for ridge regression """
+    # Plots and prints the accuracy for a certain value range for lambdas, #
+    # for ridge regression                                                 #  
     seed = 1
     degree = 12
     k_fold = 4
@@ -224,9 +226,9 @@ def ridgeregression_lambda(y, x):
 
 
 def ridgeregression_degree_lambda(y,x):
-    """ Plots and prints the accuracy for a certain value range of """
-    """ degrees for the polynomial kernel, and value range for lambdas, """
-    """ for ridge regression """
+    # Plots and prints the accuracy for a certain value range of      #
+    # degrees for the polynomial kernel, and value range for lambdas, #
+    # for ridge regression """
     seed = 1
     k_fold = 4
     lambdas = [0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]#[0.0001]#np.logspace(-6,-3, 4)
@@ -277,7 +279,7 @@ def ridgeregression_degree_lambda(y,x):
 ############################ LOGISTIC REGRESSION #################################
 
 def cross_validation_lr(y, x, k_indices, k, max_iters, gamma, degree):
-    """return the loss of ridge regression."""
+    # Returns the loss of ridge regression.     #
 
     y_te=y[k_indices[k,:]]
     y_te = np.expand_dims(y_te, axis=1)
@@ -383,7 +385,7 @@ def logregression_gamma_hessian(y, x):
 
 
 def cross_validation_lrh(y, x, k_indices, k, max_iters, gamma):
-    """return the loss of ridge regression."""
+    # Returns the loss of ridge regression.     #
 
     y_te=y[k_indices[k,:]]
     y_te = np.expand_dims(y_te, axis=1)
@@ -415,7 +417,7 @@ def cross_validation_lrh(y, x, k_indices, k, max_iters, gamma):
 ################### REGURALIZED LOGISTIC REGRESSION ############################
 
 def cross_validation_rlr(y, x, lambda_, k_indices, k, max_iters, gamma):
-    """return the loss of ridge regression."""
+    # Returns the loss of ridge regression.     #
 
     y_te=y[k_indices[k,:]]
     y_te = np.expand_dims(y_te, axis=1)
@@ -465,7 +467,7 @@ def reglogregression_gamma(y, x):
 ############################ STACKING #################################
 
 def cross_validation_stacking(y, x, k_indices, k):
-    """return the loss of ridge regression."""
+    # Returns the loss of ridge regression.     #
 
     y_te=y[k_indices[k,:]]
     y_te = np.expand_dims(y_te, axis=1)
@@ -571,7 +573,7 @@ def rr_lambda_visualization(degree, lambdas, accs, stds):
     plt.show()
 
 def cross_validation_visualization(lambds, mse_tr, mse_te):
-    """visualization the curves of mse_tr and mse_te."""
+    # Visualization the curves of mse_tr and mse_te.        #
     plt.semilogx(lambds, mse_tr, marker=".", color='b', label='train error')
     plt.semilogx(lambds, mse_te, marker=".", color='r', label='test error')
     plt.xlabel("lambda")
@@ -584,7 +586,7 @@ def cross_validation_visualization(lambds, mse_tr, mse_te):
 
 ################# LOGISTIC REGRESSION PLOTS ########################
 def cross_validation_visualization_lr(gammas, acc):
-    """visualization the curves of mse_tr and mse_te."""
+    # Visualization the curves of mse_tr and mse_te.       #
     plt.semilogx(gammas, acc, marker=".", color='b', label='train error')
     plt.xlabel("gamma")
     plt.ylabel("accuracy")
@@ -595,7 +597,6 @@ def cross_validation_visualization_lr(gammas, acc):
 
 ############ REGULARIZED LOGISTIC REGRESSION PLOTS ##################
 def cross_validation_visualization_rlr(gammas, lambdas, accs):
-#def plot_accs_degs(degs, lambdas, accs):
     
     for i in range(len(lambdas)):
         label = 'lambda =' + str(lambdas[i])
