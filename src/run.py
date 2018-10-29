@@ -30,7 +30,7 @@ def main():
 
 	# Remove -999 values
 	input_data_train, input_data_test = remove999(input_data_train, yb_train, ids_train, input_data_test, ids_test)
-
+	
 	# Remove selected features
 	#input_data_train, input_data_test = removecols(input_data_train, input_data_test, [14,15,17,18,24,25,27,28])
 
