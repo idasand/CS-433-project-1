@@ -52,12 +52,12 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
 			# store w and loss
 			ws.append(w)
 			losses.append(loss)
-			print(loss)
 
 	#finds best parameters
 	min_ind = np.argmin(losses)
 	loss = losses[min_ind]
 	w = ws[min_ind][:]
+
 
 	return w, loss
 
@@ -209,8 +209,8 @@ def build_model_data(x, y):
     #From ex02 template
     """Form (y,tX) to get regression data in matrix form."""
     N = len(y)
-    #tx = np.c_[np.ones(N), x]
     tx = np.c_[np.ones((y.shape[0], 1)), x]
+
     return y, tx
 
 
@@ -218,6 +218,7 @@ def compute_mse(y, tx, w):
     """Compute the loss by mse."""
     e = y - tx.dot(w)
     mse =  1/(2 * len(e)) * e.dot(e)
+
     return mse
 
 
@@ -225,6 +226,7 @@ def compute_gradient(y, tx, w):
     """Compute the gradient at a certain point w"""
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)
+
     return grad, err
 
 
@@ -238,6 +240,7 @@ def build_poly(x, degree):
     ret = np.ones([len(x),1])
     for d in range (1,degree+1):
         ret = np.c_[ret,np.power(x,d)]
+
     return ret
 
 
@@ -256,27 +259,6 @@ def split_data(y, x, ratio, seed=10):
 
     return x_tr, x_te, y_tr, y_te
 
-
-def bootstrap_data(x, num_subSamp):
-    temp_mean = np.zeros((1,x.shape[1]))
-    temp_std = np.zeros((1,x.shape[1]))
-    for i in range(num_subSamp):  
-        #Choosing a random subsample(with replacement) of the data with size equal to half of the sample size
-        a = x[np.random.randint(x.shape[0], size=x.shape[0]//2), :]
-        temp_mean += np.mean(a, axis=0)
-        temp_std += np.std(a, axis=0)
-    bootstrapMean = temp_mean/num_subSamp
-    bootstrapStd = temp_std/num_subSamp
-    return bootstrapMean, bootstrapStd
-
-
-def standardize_with_bootstrapping(x,num_subSamp):
-    """Standardize the original data set."""
-    b_mean, b_std = bootstrap_data(x, num_subSamp)
-    x -= b_mean
-    x /= b_std
-
-    return x
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):

@@ -34,13 +34,12 @@ def cross_validation_gd(y, x, k_indices, k, gamma, max_iters):
 
     return acc
 
-
 def gradientdescent_gamma(y, x):
     """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
     seed = 1
     k_fold = 10
     max_iters = 1000
-    gammas = [0.001,0.005,0.01,0.05,0.1, 0.15,0.2]#,0.3]
+    gammas = [0.001,0.005,0.01,0.05,0.1, 0.15,0.2]
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -61,7 +60,55 @@ def gradientdescent_gamma(y, x):
 
 
     gradientdescent_gamma_visualization(gammas, accs, stds)
+
+############# STOCHASTIC GRADIENT DESCENT ################
+
+def cross_validation_sgd(y, x, k_indices, k, gamma, max_iters):
+    """ perform the k_th step of cross validation on gradient descent """
+
+    y_te=y[k_indices[k,:]]
+    x_te=x[k_indices[k,:]]
+
+    tr_indices=np.delete(k_indices, (k), axis=0)
     
+    y_tr=y[tr_indices].flatten()
+    x_tr = x[tr_indices].reshape(x.shape[0]-x_te.shape[0],x.shape[1])
+
+    y_tr, tx_tr = build_model_data(x_tr, y_tr)
+    y_te, tx_te = build_model_data(x_te, y_te)
+    initial_w = np.zeros(tx_tr.shape[1])
+    w, loss = least_squares_SGD(y_tr, tx_tr, initial_w, max_iters, gamma)
+    y_pred = predict_labels(w, tx_te)
+    acc = float(np.sum(y_te == y_pred))/len(y_te)
+
+    return acc
+
+def stochastic_gradientdescent_gamma(y, x):
+    """ Plots and prints the accuracy for a certain value range of gammas, for gradient descent """
+    seed = 1
+    k_fold = 4
+    max_iters = 100
+    gammas = [0.0001,0.0005,0.001,0.005,0.01,0.05,0.1]
+
+    # split data in k fold
+    k_indices = build_k_indices(y, k_fold, seed)
+    # define lists to store the loss of training data and test data
+    
+    accs = []
+    stds = []
+
+    for gamma in gammas:
+        acc_temp = []   
+        for k in range(k_fold):
+            acc = cross_validation_sgd(y, x, k_indices, k, gamma, max_iters)
+            acc_temp.append(acc)
+        accs.append(np.mean(acc_temp))
+        stds.append(np.std(acc_temp))
+        
+        print(gamma, ': Acc = ', np.mean(acc_temp), ', std = ', np.std(acc_temp))
+
+
+    gradientdescent_gamma_visualization(gammas, accs, stds)
 
 ###################### LEAST SQUARES ######################
 

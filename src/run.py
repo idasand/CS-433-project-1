@@ -39,8 +39,8 @@ def main():
 
 	#sgd_w, sgd_loss = run_stochastic_gradient_descent(yb_train, x_train)
 
-	rr_w, rr_loss, degree = run_ridge_regression(yb_train,x_train)
-	tx_test = build_poly(x_test,degree)
+	#rr_w, rr_loss, degree = run_ridge_regression(yb_train,x_train)
+	#tx_test = build_poly(x_test,degree)
 
 	#ls_w, ls_loss, degree = run_least_square(yb_train,x_train)
 	#print(ls_w.shape)
@@ -59,6 +59,8 @@ def main():
 
 	############# VALIDATIONS ###############
 	#gradientdescent_gamma(yb_train, x_train)
+
+	stochastic_gradientdescent_gamma(yb_train, x_train)
 	
 	#leastsquares_degree(yb_train, x_train)
 	
@@ -76,7 +78,7 @@ def main():
 
 	#reglogregression_gamma(yb_train, x_train)
 
-	stacking_cross(yb_train, x_train)
+	#stacking_cross(yb_train, x_train)
 	
 	#y_pred = stacking(yb_train,x_train,yb_test,x_test)
 	
