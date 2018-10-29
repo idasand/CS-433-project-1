@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 
 
 
-########## The six methods ##########
+############################ The six methods ##############################
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-	"""Gradient descent algorithm."""
-	# Define parameters to store w and loss
+	# Gradient descent algorithm.                                         #
+	# Define parameters to store w and loss                               #
 	ws = [initial_w]
 	losses = []
 	w = initial_w
@@ -35,7 +35,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-	"""Stochastic gradient descent algorithm."""
+	# Stochastic gradient descent algorithm.                             #
 	ws = [initial_w]
 	losses = []
 	w = initial_w
@@ -63,7 +63,7 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
 
 
 def least_squares(y, tx):
-	"""Calculates the least squares solution, and the loss."""
+	# Calculates the least squares solution, and the loss.            #
 	a = tx.T.dot(tx)
 	b = tx.T.dot(y)
 	w = np.linalg.solve(a, b)
@@ -74,7 +74,7 @@ def least_squares(y, tx):
 
 
 def ridge_regression(y, tx, lambda_):
-    """Finds the least square solution with the regulation term"""
+    # Finds the least square solution with the regulation term        #
     aI = 2 * tx.shape[0] * lambda_ * np.identity(tx.shape[1])
     a = tx.T.dot(tx) + aI
     b = tx.T.dot(y)
@@ -86,13 +86,13 @@ def ridge_regression(y, tx, lambda_):
 
 
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    """Returns the best w found by logistic regression"""
+    # Returns the best w found by logistic regression                 #
     ws = [initial_w]
     losses = []
     w = initial_w
     loss = 0
 
-    #Iterates through the number of steps
+    # Iterates through the number of steps                            #
     for n_iter in range(max_iters):
         loss = sum(sum(np.logaddexp(0, tx.dot(w)) - y*(tx.dot(w))))
         prediction = sigmoid(tx.dot(w))
@@ -136,7 +136,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
 
 
 
-##########  Data processing  ##########	
+#######################  Data processing  #######################	
  
 def standardize(x):
     """Standardize the original data set."""
@@ -147,7 +147,8 @@ def standardize(x):
 
 
 def remove999(x_train, pred_train, ids_train, x_test, ids_test): 
-    """Removes the missing data points (-999 in the data set) and replaces them with the feature mean"""
+    # Removes the missing data points (-999 in the data set) and #
+    # replaces them with the feature mean                        #
     x_train = np.concatenate((ids_train[:,None], x_train), axis=1)
     x_test = np.concatenate((ids_test[:,None], x_test), axis=1)  
 
@@ -175,7 +176,7 @@ def remove999(x_train, pred_train, ids_train, x_test, ids_test):
 
 
 def removecols(input_data_train, input_data_test, cols):
-    """Removes any columns from the train and test data set"""
+    # Removes any columns from the train and test data set     #
     input_data_train = np.delete(input_data_train,cols, axis = 1)
     input_data_test = np.delete(input_data_test,cols, axis = 1)
     
@@ -183,7 +184,8 @@ def removecols(input_data_train, input_data_test, cols):
     
 
 def logpositive(x_train, x_test):
-    """Converts features with only positive entries into their logarithms"""
+    #Converts features with only positive entries into their    #
+    # logarithms                                                #
     for i in range(1,x_train.shape[1]):
         if (np.all(x_train[:,i]) > 0 and np.all(x_test[:,i] > 0)):
             x_train[:,i] = np.log10(x_train[:,i])
@@ -203,11 +205,11 @@ def findcorrelation(pred_train, sig_or_back):
 
 
 
-########## Other implementations used ##########
+################### Other implementations used ################
 
 def build_model_data(x, y):
-    #From ex02 template
-    """Form (y,tX) to get regression data in matrix form."""
+    # From ex02 template                                      #
+    # Form (y,tX) to get regression data in matrix form.      #
     N = len(y)
     tx = np.c_[np.ones((y.shape[0], 1)), x]
 
@@ -215,7 +217,7 @@ def build_model_data(x, y):
 
 
 def compute_mse(y, tx, w):
-    """Compute the loss by mse."""
+    # Compute the loss by mse.                                #
     e = y - tx.dot(w)
     mse =  1/(2 * len(e)) * e.dot(e)
 
@@ -223,7 +225,7 @@ def compute_mse(y, tx, w):
 
 
 def compute_gradient(y, tx, w):
-    """Compute the gradient at a certain point w"""
+    # Compute the gradient at a certain point w               #
     err = y - tx.dot(w)
     grad = -tx.T.dot(err) / len(err)
 
@@ -231,12 +233,13 @@ def compute_gradient(y, tx, w):
 
 
 def sigmoid(t):
-    """Apply sigmoid function on t"""
+    # Apply sigmoid function on t                             #
     return 1.0/(1 + np.exp(-t))
 
 
 def build_poly(x, degree):
-    """Add a polynomial basis function to the data x, up to a degree=degree"""
+    # Add a polynomial basis function to the data x, up to a  #
+    # degree=degree                                           #
     ret = np.ones([len(x),1])
     for d in range (1,degree+1):
         ret = np.c_[ret,np.power(x,d)]
@@ -245,7 +248,8 @@ def build_poly(x, degree):
 
 
 def split_data(y, x, ratio, seed=10):
-    """Splitting data into train and test set, with (share = ratio) of the data in the training set"""
+    # Splitting data into train and test set, with (share =   #
+    # ratio) of the data in the training set                  #
     np.random.seed(seed)
     N = len(y)
 
@@ -263,12 +267,15 @@ def split_data(y, x, ratio, seed=10):
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     #From ex02 template
-    """
-    Generate a minibatch iterator for a dataset.
-    Takes as input two iterables (here the output desired values 'y' and the input data 'tx')
-    Outputs an iterator which gives mini-batches of `batch_size` matching elements from `y` and `tx`.
-    Data can be randomly shuffled to avoid ordering in the original data messing with the randomness of the minibatches.
-    """
+    
+    # Generate a minibatch iterator for a dataset.           #
+    # Takes as input two iterables (here the output desired  #
+    # values 'y' and the input data 'tx') Outputs an         #
+    # iterator which gives mini-batches of `batch_size`      #
+    # matching elements from `y` and `tx`. Data can be       #
+    # randomly shuffled to avoid ordering in the original    #
+    # data messing with the randomness of the minibatches.   #
+
     data_size = len(y)
 
     if shuffle:

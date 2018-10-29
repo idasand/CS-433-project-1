@@ -21,7 +21,7 @@ def run_gradient_descent(y, x):
 def run_stochastic_gradient_descent(y,x):
 	y, tx = build_model_data(x,y)
 	max_iters = 100
-	gamma = 0.0005
+	gamma = 0.0001
 	initial_w = np.zeros(tx.shape[1]) 
 	sgd_w, sgd_loss = least_squares_SGD(y, tx, initial_w, max_iters, gamma)
 
@@ -187,7 +187,7 @@ def to_stacked_row(models, predict_list, row):
 	# if the last model should only train on the predictions of the       #
 	# others return only stacked_row                                      #
 
-	return rowlist + stacked_row
+	return stacked_row#rowlist + stacked_row
 
 
 def stacking(y,x,y_test,x_test):
@@ -208,7 +208,7 @@ def stacking(y,x,y_test,x_test):
 	# creates a model with logistic regression based on the other 
 	# models predictions
 	stacked_model = logistic_regression_model(stacked_dataset)
-	print("Stacking: Finished with logistic regression on the other models predictions")
+	print("Stacking: Finished with logistic regression on the other models' predictions")
 	predictions = list()
 	for row in test:
 		# creates predictions based on the test-set

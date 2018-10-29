@@ -116,7 +116,7 @@ def stochastic_gradientdescent_gamma(y, x):
 
 
 def cross_validation_ls(y, x, k_indices, k, degree):
-    # Perform the k_th step of cross validation on least squares #
+    # Perform the k_th step of cross validation on least squares    #
     y_te=y[k_indices[k,:]]
     x_te=x[k_indices[k,:]]
 
@@ -136,15 +136,15 @@ def cross_validation_ls(y, x, k_indices, k, degree):
 
 
 def leastsquares_degree(y, x):
-    #Plots and prints the accuracy for a certain value range of    #
-    # degrees for the polynomial kernel,for least squares          #
+    #Plots and prints the accuracy for a certain value range of     #
+    # degrees for the polynomial kernel,for least squares           #
     seed = 1
     k_fold = 4
     degrees = range(1,14+1)
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
-    # define lists to store the loss of training data and test data
+    # define lists to store the loss of training data and test data #
     
     accs = []
     stds = []
@@ -199,7 +199,7 @@ def ridgeregression_lambda(y, x):
     lambdas = np.logspace(-5, 0, 6)
     # Split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
-    # define lists to store the loss of training data and test data
+    # define lists to store the loss of training data and test data        #
     rmse_tr = []
     rmse_te = []
     accs = []
@@ -228,11 +228,11 @@ def ridgeregression_lambda(y, x):
 def ridgeregression_degree_lambda(y,x):
     # Plots and prints the accuracy for a certain value range of      #
     # degrees for the polynomial kernel, and value range for lambdas, #
-    # for ridge regression """
+    # for ridge regression                                            #
     seed = 1
     k_fold = 4
-    lambdas = [0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]
-    degrees = range(4,13)
+    lambdas = [0.0001,0.001]#[0.000005,0.00001,0.00005,0.0001,0.0005,0.001, 0.005, 0.01]
+    degrees = range(9,10)#range(4,13)
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -241,7 +241,7 @@ def ridgeregression_degree_lambda(y,x):
     stds = []
     
     for d_ind, lambda_ in enumerate(lambdas):
-        # define lists to store the loss of training data and test data
+        # define lists to store the loss of training data and test data 
         rmse_tr = []
         rmse_te = []
         acc = []
@@ -290,8 +290,7 @@ def cross_validation_lr(y, x, k_indices, k, max_iters, gamma, degree):
     y_tr=y[tr_indices].flatten()
     y_tr = np.expand_dims(y_tr, axis=1)
     x_tr = x[tr_indices].reshape(x.shape[0]-x_te.shape[0],x.shape[1])
-    #y_tr,tx_tr = build_model_data(x_tr, y_tr)
-    #y_te,tx_te = build_model_data(x_te, y_te)
+
     tx_tr = build_poly(x_tr,degree)
     tx_te = build_poly(x_te,degree)
 
@@ -309,9 +308,8 @@ def logregression_gamma(y, x):
     seed = 1
     max_iters = 100
     degree = 1
-
     k_fold = 4
-    gammas = [0.0001,0.0005, 0.001, 0.0015, 0.005]
+    gammas = [0.0001, 0.001, 0.005, 0.01, 0.025, 0.05, 0.1]
 
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -429,13 +427,12 @@ def cross_validation_stacking(y, x, k_indices, k):
     print(acc)
     return acc
 
-def stacking_cross(y, x):
+def stacking_crossvalidation(y, x):
     seed = 1
-    #degree = 10
     k_fold = 4
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
-    # define lists to store the loss of training data and test data
+    # define lists to store the loss of training data and test data #
     accs = []
     stds = []
     for k in range(k_fold):
@@ -447,9 +444,9 @@ def stacking_cross(y, x):
     print(' acc = ', acc_final, ', std = ', stds_final)
 
 
-############################ PLOTS ##############################
+############################ PLOTS ################################
 
-################# GRADIENT DESCENT PLOTS ########################
+################# GRADIENT DESCENT PLOTS ##########################
 def gradientdescent_gamma_visualization(gammas, accs, stds):
     plt.errorbar(gammas, accs, yerr=stds, marker=".", color='b', label='Accuracy')
     plt.xscale('log')
@@ -480,7 +477,7 @@ def ls_degree_visualization(degs, accs, stds):
 def rr_degree_lambda_visualization(degs, lambdas, accs, stds):
     for i in range(len(lambdas)):
         label = 'lambda =' + str(lambdas[i])
-        plt.errorbar(degs, accs[:,i], yerr=stds[:,i], marker=".", color='b', label=label)
+        plt.errorbar(degs, accs, yerr=stds, marker=".", color='b', label=label)
     
     plt.xscale('log')
     plt.xlabel("degree")
